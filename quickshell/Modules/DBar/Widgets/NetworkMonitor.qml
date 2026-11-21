@@ -145,6 +145,10 @@ BasePill {
                     NumericText {
                         id: rxText
                         width: root.compactMode ? implicitWidth : reservedWidth
+                        // Tabular digits, so "1.1" isn't narrower than the slot's widest digits.
+                        font.features: {
+                            "tnum": 1
+                        }
                         text: root.horizontalRate(DgopService.networkRxRate)
                         reserveText: root.reserveRate
                         font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale, root.barConfig?.maximizeWidgetText)
@@ -170,6 +174,10 @@ BasePill {
                     NumericText {
                         id: txText
                         width: root.compactMode ? implicitWidth : reservedWidth
+                        // Tabular digits, so "1.1" isn't narrower than the slot's widest digits.
+                        font.features: {
+                            "tnum": 1
+                        }
                         text: root.horizontalRate(DgopService.networkTxRate)
                         reserveText: root.reserveRate
                         font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale, root.barConfig?.maximizeWidgetText)
