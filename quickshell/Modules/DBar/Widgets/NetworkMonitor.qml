@@ -112,13 +112,13 @@ BasePill {
                 }
 
                 Row {
-                    // Compact mode keeps the arrow next to the number and centers the pair in
-                    // the fixed slot, so the width stays put without a lopsided gap.
+                    // Compact mode keeps each arrow next to its number and puts the unused part
+                    // of both fixed slots between the two rates, so the outer padding matches
+                    // other pills and the width still never changes.
                     readonly property real slack: root.compactMode ? rxText.reservedWidth - rxText.implicitWidth : 0
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingXS
-                    leftPadding: Math.floor(slack / 2)
-                    rightPadding: Math.ceil(slack / 2)
+                    rightPadding: slack
 
                     StyledText {
                         text: "↓"
@@ -140,13 +140,10 @@ BasePill {
                 }
 
                 Row {
-                    // Compact mode keeps the arrow next to the number and centers the pair in
-                    // the fixed slot, so the width stays put without a lopsided gap.
                     readonly property real slack: root.compactMode ? txText.reservedWidth - txText.implicitWidth : 0
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingXS
-                    leftPadding: Math.floor(slack / 2)
-                    rightPadding: Math.ceil(slack / 2)
+                    leftPadding: slack
 
                     StyledText {
                         text: "↑"
