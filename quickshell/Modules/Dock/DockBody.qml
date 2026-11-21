@@ -393,6 +393,33 @@ FocusScope {
         onTriggered: dock.revealSticky = false
     }
 
+    // A hidden horizontal dock reveals when the pointer touches any part of the screen
+    // edge, not just the strip under the dock (which is narrow in compact mode). Hold it
+    // open long enough to move the pointer across to the dock.
+    readonly property bool edgeRevealActive: !isVertical && !usesConnectedFrameChrome && autoHide
+
+    HoverHandler {
+        id: edgeRevealHover
+        enabled: dock.edgeRevealActive
+        onHoveredChanged: {
+            if (hovered && !dock.reveal) {
+                dock.revealSticky = true;
+                revealHold.stop();
+                edgeRevealHold.restart();
+            }
+        }
+    }
+
+    Timer {
+        id: edgeRevealHold
+        interval: 1000
+        repeat: false
+        onTriggered: {
+            if (!dockMouseArea.containsMouse && !dock.contextMenuOpen)
+                dock.revealSticky = false;
+        }
+    }
+
     // Flip `reveal` false when a modal claims this edge; reuses the slide animation
     readonly property bool _modalRetractActive: {
         if (!dock._dockScreenName)
@@ -544,6 +571,8 @@ FocusScope {
                     return baseX - (expanded ? animationHeadroom + borderThickness + dock.horizontalConnectorExtent : 0);
                 return baseX - (expanded ? borderThickness + dock.horizontalConnectorExtent : 0);
             }
+            if (!isVertical && !expanded && dock.edgeRevealActive)
+                return 0;
             if (!isVertical)
                 return dockCore.x + dockMouseArea.x - (expanded ? borderThickness : 0);
             if (!atEndEdge)
@@ -568,6 +597,8 @@ FocusScope {
                 return 0;
             if (chrome)
                 return dockMouseArea.width + (isVertical && expanded ? animationHeadroom : 0) + (expanded ? borderThickness * 2 + dock.horizontalConnectorExtent * 2 : 0);
+            if (!isVertical && !expanded && dock.edgeRevealActive)
+                return dock.width;
             if (!isVertical)
                 return dockMouseArea.width + (expanded ? borderThickness * 2 : 0);
             if (!expanded)
