@@ -13,7 +13,7 @@ BasePill {
     readonly property bool hideWhenIdle: SettingsData.widgetOption("network_speed_monitor", widgetData, "hideWhenIdle")
     readonly property bool compactMode: SettingsData.widgetOption("network_speed_monitor", widgetData, "compactMode")
     readonly property bool shouldHide: hideWhenIdle && widgetData?.enabled !== false && Math.max(DgopService.networkRxRate, DgopService.networkTxRate) < 1024
-    readonly property string reserveRate: compactMode ? "888 MB/s" : "88.8 MB/s"
+    readonly property string reserveRate: compactMode ? "8.8 MB/s" : "88.8 MB/s"
 
     width: shouldHide ? 0 : (isVerticalOrientation ? barThickness : visualWidth)
     height: shouldHide ? 0 : (isVerticalOrientation ? visualHeight : barThickness)
@@ -41,9 +41,25 @@ BasePill {
         }
     }
 
+    // Two significant digits ("4.2 KB/s", "42 KB/s", then "0.1 MB/s"), so the fixed-width slot is
+    // never much wider than the text. Three digits would leave two digits of empty space.
+    function compactRate(rate) {
+        if (rate <= 0)
+            return "0 KB/s";
+        const units = ["K", "M", "G", "T"];
+        let value = rate / 1024;
+        let unit = 0;
+        while (unit < units.length - 1 && value >= 99.5) {
+            value /= 1024;
+            unit++;
+        }
+        const shown = value < 9.95 ? Math.max(0.1, value).toFixed(1) : Math.round(value).toString();
+        return shown + " " + units[unit] + "B/s";
+    }
+
     function horizontalRate(rate) {
         if (compactMode)
-            return Format.formatRateCompact(rate, false);
+            return compactRate(rate);
         return rate > 0 ? Format.formatRate(rate, 1) : "0 B/s";
     }
 
