@@ -1,3 +1,6 @@
+> **This is Reilly's fork.** Read `FORK.md` first: it explains the patch branch,
+> how the shell gets deployed, and how to sync with upstream releases.
+
 ## What is this?
 
 DMS is an open-source desktop shell for Wayland compositors on linux, built to work with many compositors.
