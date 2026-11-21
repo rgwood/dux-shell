@@ -102,16 +102,23 @@ BasePill {
                 spacing: Theme.spacingS
                 visible: !root.isVerticalOrientation
 
+                // Compact mode drops the icon: the colored arrows already say what this is.
                 DIcon {
                     name: "network_check"
                     size: Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
                     color: Theme.widgetIconColor
                     anchors.verticalCenter: parent.verticalCenter
+                    visible: !root.compactMode
                 }
 
                 Row {
+                    // Compact mode keeps the arrow next to the number and centers the pair in
+                    // the fixed slot, so the width stays put without a lopsided gap.
+                    readonly property real slack: root.compactMode ? rxText.reservedWidth - rxText.implicitWidth : 0
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingXS
+                    leftPadding: Math.floor(slack / 2)
+                    rightPadding: Math.ceil(slack / 2)
 
                     StyledText {
                         text: "↓"
@@ -120,6 +127,8 @@ BasePill {
                     }
 
                     NumericText {
+                        id: rxText
+                        width: root.compactMode ? implicitWidth : reservedWidth
                         text: root.horizontalRate(DgopService.networkRxRate)
                         reserveText: root.reserveRate
                         font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale, root.barConfig?.maximizeWidgetText)
@@ -131,8 +140,13 @@ BasePill {
                 }
 
                 Row {
+                    // Compact mode keeps the arrow next to the number and centers the pair in
+                    // the fixed slot, so the width stays put without a lopsided gap.
+                    readonly property real slack: root.compactMode ? txText.reservedWidth - txText.implicitWidth : 0
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingXS
+                    leftPadding: Math.floor(slack / 2)
+                    rightPadding: Math.ceil(slack / 2)
 
                     StyledText {
                         text: "↑"
@@ -141,6 +155,8 @@ BasePill {
                     }
 
                     NumericText {
+                        id: txText
+                        width: root.compactMode ? implicitWidth : reservedWidth
                         text: root.horizontalRate(DgopService.networkTxRate)
                         reserveText: root.reserveRate
                         font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale, root.barConfig?.maximizeWidgetText)
