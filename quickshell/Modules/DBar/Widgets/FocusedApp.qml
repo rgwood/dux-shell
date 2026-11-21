@@ -96,6 +96,18 @@ BasePill {
 
     onSettingsAppIdSubstitutionsChanged: updateDesktopEntry()
 
+    // Drops a trailing "<sep> ...<appName>" segment, e.g. " — Mozilla Firefox" or " - Slack".
+    function stripAppSuffix(title, appName) {
+        if (!title || !appName)
+            return title;
+        if (title === appName)
+            return "";
+        const match = title.match(/^(.*\S)\s+[-—–·|]\s+([^-—–·|]+)$/);
+        if (match && match[2].toLowerCase().endsWith(appName.toLowerCase()))
+            return match[1];
+        return title;
+    }
+
     function updateDesktopEntry() {
         if (activeWindow && activeWindow.appId) {
             const moddedId = Paths.moddedAppId(activeWindow.appId);
@@ -240,7 +252,8 @@ BasePill {
                     StyledText {
                         id: appText
                         text: {
-                            if (compactMode || !activeWindow || !activeWindow.appId)
+                            // The icon already says which app this is.
+                            if (compactMode || horizontalAppIcon.visible || horizontalSteamIcon.visible || !activeWindow || !activeWindow.appId)
                                 return "";
                             return Paths.getAppName(activeWindow.appId, activeDesktopEntry);
                         }
@@ -276,23 +289,11 @@ BasePill {
                         id: titleText
                         text: {
                             const title = activeWindow && activeWindow.title ? activeWindow.title : "";
-                            const appName = appText.text;
-
-                            if (compactMode) {
-                                if (!title || title === appName)
-                                    return title || appName;
-                                if (title.endsWith(appName))
-                                    return title.substring(0, title.length - appName.length).replace(/ (-|—) $/, "") || appName;
-                                return title;
-                            }
-
-                            if (!title || !appName)
-                                return title;
-
-                            if (title.endsWith(appName))
-                                return title.substring(0, title.length - appName.length).replace(/ (-|—) $/, "");
-
-                            return title;
+                            const appName = activeWindow && activeWindow.appId ? Paths.getAppName(activeWindow.appId, activeDesktopEntry) : "";
+                            const stripped = root.stripAppSuffix(title, appName);
+                            if (appText.text)
+                                return stripped;
+                            return stripped || title || appName;
                         }
                         font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale, root.barConfig?.maximizeWidgetText)
                         color: root.contentColor
