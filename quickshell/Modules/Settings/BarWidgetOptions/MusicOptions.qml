@@ -73,6 +73,14 @@ Column {
             onToggled: checked => root.page.set("mediaShowCoverArt", checked)
         }
 
+        SettingsToggleRow {
+            visible: root.controls
+            text: I18n.tr("Note icon", "media widget option showing a music note in the pill")
+            description: I18n.tr("Shown when there's no cover art or visualizer", "media widget note icon toggle description")
+            checked: root.page.value("mediaShowIcon")
+            onToggled: checked => root.page.set("mediaShowIcon", checked)
+        }
+
         SettingsDropdownRow {
             visible: root.controls
             resetStore: root.page

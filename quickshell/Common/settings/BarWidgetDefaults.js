@@ -144,6 +144,7 @@ var DEFAULTS = {
         mediaShowLyrics: true,
         mediaSmoothLyrics: false,
         mediaShowCoverArt: true,
+        mediaShowIcon: true,
         audioScrollMode: "nothing"
     },
     focusedWindow: {

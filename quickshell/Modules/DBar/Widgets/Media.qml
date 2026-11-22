@@ -37,7 +37,8 @@ BasePill {
     readonly property string coverArtUrl: coverArtEnabled && activePlayer && TrackArtService.artReadyFor(activePlayer) ? TrackArtService.resolvedArtUrl : ""
     readonly property bool hasCoverArt: coverArtUrl !== ""
     readonly property bool visualizerEnabled: CavaService.cavaAvailable && SettingsData.audioVisualizerEnabled
-    readonly property bool showIconSlot: visualizerEnabled || !hasCoverArt
+    readonly property bool noteIconEnabled: SettingsData.widgetOption("music", widgetData, "mediaShowIcon")
+    readonly property bool showIconSlot: visualizerEnabled || (!hasCoverArt && noteIconEnabled)
     readonly property real badgeSize: BarMetrics.mediaControlSize * contentScale
     readonly property real badgeExtent: (hasCoverArt ? badgeSize + Theme.spacingXS : 0) + (showIconSlot ? badgeSize + Theme.spacingXS : 0)
     readonly property string trackSummary: [MprisController.stableTitle, MprisController.stableArtist, MprisController.stableAlbum].filter(part => part).join(" • ")
