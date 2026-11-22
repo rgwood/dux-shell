@@ -1120,13 +1120,17 @@ BasePill {
                                             visible: modelData.isSteamApp && !modelData.icon
                                         }
 
+                                        // Underline in the pill's ink color. A border in focusedBorderColor (the
+                                        // old marker) matches the active pill and can't be seen.
                                         Rectangle {
-                                            anchors.fill: parent
                                             visible: (rowAppIcon.visible || rowSteamIcon.visible || modelData.isQuickshell) && appHighlightActive
-                                            color: "transparent"
-                                            radius: Math.min(Theme.cornerRadiusS, width / 2, height / 2)
-                                            border.width: Theme.outlineWidth
-                                            border.color: focusedBorderColor
+                                            anchors.top: parent.bottom
+                                            anchors.topMargin: 1
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                            width: Math.round(parent.width * 0.6)
+                                            height: 2
+                                            radius: height / 2
+                                            color: contentInk
                                             z: 1
                                         }
 
@@ -1269,13 +1273,16 @@ BasePill {
                                             visible: modelData.isSteamApp && !modelData.icon
                                         }
 
+                                        // Side bar in the pill's ink color, the vertical-bar twin of the underline.
                                         Rectangle {
-                                            anchors.fill: parent
                                             visible: (colAppIcon.visible || colSteamIcon.visible || modelData.isQuickshell) && appHighlightActive
-                                            color: "transparent"
-                                            radius: Math.min(Theme.cornerRadiusS, width / 2, height / 2)
-                                            border.width: Theme.outlineWidth
-                                            border.color: focusedBorderColor
+                                            anchors.right: parent.left
+                                            anchors.rightMargin: 1
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            width: 2
+                                            height: Math.round(parent.height * 0.6)
+                                            radius: width / 2
+                                            color: contentInk
                                             z: 1
                                         }
 
