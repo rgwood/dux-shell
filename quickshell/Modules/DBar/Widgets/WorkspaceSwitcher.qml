@@ -1043,8 +1043,8 @@ BasePill {
                                         height: root.appIconSize
                                         readonly property var windowId: modelData.windowId
                                         readonly property bool appHighlightActive: root.opt("workspaceActiveAppHighlightEnabled") && modelData.active
-                                        readonly property color appBorderColor: appHighlightActive ? focusedBorderColor : Theme.primarySelected
-                                        readonly property color appGlyphColor: appHighlightActive ? focusedBorderColor : Theme.primary
+                                        readonly property color appBorderColor: Theme.primarySelected
+                                        readonly property color appGlyphColor: Theme.primary
                                         readonly property real appOpacity: modelData.active || root.opt("workspaceUnfocusedAppsFullOpacity") ? 1.0 : rowAppHover.hovered ? root.hoveredAppAlpha : root.unfocusedAppAlpha
 
                                         IconImage {
@@ -1099,7 +1099,7 @@ BasePill {
                                             layer.effect: MultiEffect {
                                                 saturation: 0
                                                 colorization: 1
-                                                colorizationColor: appHighlightActive ? focusedBorderColor : (isActive ? quickshellIconActiveColor : quickshellIconInactiveColor)
+                                                colorizationColor: (isActive ? quickshellIconActiveColor : quickshellIconInactiveColor)
                                             }
                                         }
 
@@ -1115,7 +1115,7 @@ BasePill {
                                             anchors.centerIn: parent
                                             size: root.appIconSize
                                             name: "sports_esports"
-                                            color: appHighlightActive ? focusedBorderColor : Theme.widgetTextColor
+                                            color: Theme.widgetTextColor
                                             opacity: appOpacity
                                             visible: modelData.isSteamApp && !modelData.icon
                                         }
@@ -1196,8 +1196,8 @@ BasePill {
                                         height: root.appIconSize
                                         readonly property var windowId: modelData.windowId
                                         readonly property bool appHighlightActive: root.opt("workspaceActiveAppHighlightEnabled") && modelData.active
-                                        readonly property color appBorderColor: appHighlightActive ? focusedBorderColor : Theme.primarySelected
-                                        readonly property color appGlyphColor: appHighlightActive ? focusedBorderColor : Theme.primary
+                                        readonly property color appBorderColor: Theme.primarySelected
+                                        readonly property color appGlyphColor: Theme.primary
                                         readonly property real appOpacity: modelData.active || root.opt("workspaceUnfocusedAppsFullOpacity") ? 1.0 : colAppHover.hovered ? root.hoveredAppAlpha : root.unfocusedAppAlpha
 
                                         IconImage {
@@ -1252,7 +1252,7 @@ BasePill {
                                             layer.effect: MultiEffect {
                                                 saturation: 0
                                                 colorization: 1
-                                                colorizationColor: appHighlightActive ? focusedBorderColor : (isActive ? quickshellIconActiveColor : quickshellIconInactiveColor)
+                                                colorizationColor: (isActive ? quickshellIconActiveColor : quickshellIconInactiveColor)
                                             }
                                         }
 
@@ -1268,7 +1268,7 @@ BasePill {
                                             anchors.centerIn: parent
                                             size: root.appIconSize
                                             name: "sports_esports"
-                                            color: appHighlightActive ? focusedBorderColor : Theme.widgetTextColor
+                                            color: Theme.widgetTextColor
                                             opacity: appOpacity
                                             visible: modelData.isSteamApp && !modelData.icon
                                         }
